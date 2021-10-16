@@ -306,4 +306,4 @@ process[1] ... process[N]
 **Диспетчеризация процессов** - управление изменением состояния процессов.
 
 **Модель переходов:**
-![Process States Model](/images/process_states.jpg)
+![Process States Model](images/process_states.jpg)
