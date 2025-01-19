@@ -1,0 +1,14 @@
+select
+    ProblemName
+from
+    Problems P
+where
+    not exists (
+        select
+            *
+        from
+            Runs R natural join Sessions S
+        where
+            R.Letter = P.Letter
+            and S.ContestId = P.ContestId
+    );

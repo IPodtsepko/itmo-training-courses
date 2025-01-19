@@ -1,0 +1,34 @@
+select StudentId
+from (
+    select distinct
+        Marks.StudentId,
+        Students.StudentId as SId
+    from
+        Students natural join Plan natural join Lecturers, Marks
+    where
+        LecturerName = :LecturerName
+    except
+    select StudentId, SId
+    from (
+        select distinct
+            Marks.StudentId,
+            Plan.CourseId,
+            Students.StudentId as SId
+        from
+            Students natural join Plan natural join Lecturers, Marks
+        where
+            LecturerName = :LecturerName
+        except
+        select
+            Marks.StudentId,
+            Plan.CourseId,
+            Students.StudentId as SId
+        from
+            Students natural join Plan natural join Lecturers
+            inner join Marks on Marks.CourseId = Plan.CourseId
+        where
+            LecturerName = :LecturerName
+    ) S1
+) S2
+where
+    StudentId = SId

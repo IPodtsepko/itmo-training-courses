@@ -1,0 +1,13 @@
+update
+    Runs
+set
+    Accepted = 1
+where
+    SubmitTime = (
+        select
+            max(cast(SubmitTime as int))
+        from
+            Runs R
+        where
+            R.Accepted = 0 and R.SessionId = Runs.SessionId
+    );

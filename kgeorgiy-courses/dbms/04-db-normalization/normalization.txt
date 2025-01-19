@@ -1,0 +1,180 @@
+===== 1НФ =====
+
+----- Описание -----
+
+1НФ уже имеет место быть, так как:
+1. В отношении нет повторяющихся групп (все строки уникальны);
+2. Все атрибуты атомарны;
+3. У отношения есть ключ (StudentId, CourseId).
+
+P.S.: Докажем, что StudentId, CourseId - это ключ. Во-первых, назовем множество ФЗ из задания S, а множество атрибутов A. Во-вторых, заметим, что
+1. (A \ {StudentId})^+_S = A \ {StudentId} ≠ A;
+2. (A \ {CourseId})^+_S = A \ {CourseId} ≠ A;
+3. {StudentId, CourseId}^+_S = A.
+
+Из (1) и (2) следует, что StudentId и CourseId входят в любой надключ, из (3) - что {StudentId, CourseId} - надключ. Следовательно, {StudentId, CourseId} - ключ по определению.
+
+----- Результат -----
+
+(StudentId, StudentName, GroupId, GroupName, CourseId, CourseName, LecturerId, LecturerName, Mark) => (StudentId, StudentName, GroupId, GroupName, CourseId, CourseName, LecturerId, LecturerName, Mark).
+
+===== 2НФ =====
+
+----- Описание -----
+
+Чтобы отношение было в 2НФ, необходимо, чтобы неключевые атрибуты не зависели от части ключа. "Мешающие" функциональные зависимости:
+1. CourseId → CourseName
+2. StudentId → StudentName, GroupId, GroupName
+
+Выполняем разбиение по первой из них и получаем два отношения:
+1. CourseId, CourseName, ключ - CourseId (a)
+2. StudentId, StudentName, GroupId, GroupName, CourseId, LecturerId, LecturerName, Mark, ключ - StudentId, CourseId (b)
+
+Первое из них находится в 2НФ, а у второго осталась всего одна "мешающая" ФЗ. Заметим, что если разбить по ней, то одно из отношений в результате будет содержить CourseId, LecturerId и LecturerName, но при этом не будет содержать GroupId. Можно показать, что тогда мы теряем ограничение целостности, накладываемое функциональной зависимостью GroupId, CourseId → LecturerId, LecturerName. Однако, вроде бы никто не запрещал выполнить декомпозицию по ФЗ GroupId, CourseId → LecturerId, LecturerName (по теореме Хита декомпозиция по ФЗ является корректной, а никакие ФЗ потеряны не будут).
+
+Таким образом, после разбиения по GroupId, CourseId → LecturerId, LecturerName получаем:
+1. GroupId, CourseId, LecturerId, LecturerName, ключ - GroupId, CourseId (c)
+2. StudentId, StudentName, GroupId, GroupName, CourseId, Mark, ключ - StudentId, CourseId (d)
+
+Тут на всякий случай покажем, что все функциональные зависимости представлены в полученных отношениях (a, c, d):
+StudentId → StudentName, GroupId, GroupName - d;
+GroupId → GroupName - d;
+GroupName → GroupId - d;
+CourseId → CourseName - a;
+LecturerId → LecturerName - c;
+StudentId, CourseId → Mark - d;
+GroupId, CourseId → LecturerId, LecturerName - c.
+
+И теперь только дно отношение осталось не в 2НФ - это отношение d. "Мешающая" ФЗ - это StudentId → StudentName, GroupId, GroupName. После разбиения получаем следующие отношения:
+1. StudentId, StudentName, GroupId, GroupName, ключ - StudentId (e)
+2. StudentId, CourseId, Mark, ключ - StudentId, CourseId (f)
+
+Таким образом, мы в результате получили 4 отношения:
+a. CourseId, CourseName, ключ - CourseId;
+c. GroupId, CourseId, LecturerId, LecturerName, ключ - GroupId, CourseId;
+e. StudentId, StudentName, GroupId, GroupName, ключ - StudentId;
+f. StudentId, CourseId, Mark, ключ - StudentId, CourseId;
+
+----- Результат -----
+
+(StudentId, StudentName, GroupId, GroupName, CourseId, CourseName, LecturerId, LecturerName, Mark) => (CourseId, CourseName); (GroupId, CourseId, LecturerId, LecturerName); (StudentId, StudentName, GroupId, GroupName); (StudentId, CourseId, Mark).
+
+===== 3НФ =====
+
+----- Описание -----
+
+Отношение находится в 3НФ, если нет цепочек транзитивных функциональных зависимостей неключевых атрибутов от ключевых. Заметим, что следующие отношения уже находятся в 3НФ:
+1. StudentId, CourseId, Mark - здесь только 1 неключевой атрибут и он напрямую зависит от ключа;
+2. CourseId, CourseName - аналогично.
+
+Рассмотрим отношение GroupId, CourseId, LecturerId, LecturerName. В нем есть транзитивная цепочка ФЗ: GroupId, CourseId → LecturerId → LecturerName. Выполним рабзиение по последней ФЗ в цепочке, то есть по LecturerId → LecturerName. Получаем два новых отношения:
+1. LecturerId, LecturerName, ключ - LecturerId;
+2. GroupId, CourseId, LecturerId, ключ - GroupId, CourseId.
+Оба из них находятся в 3НФ, так как содержат всего по 1 неключевому атрибуту, напрямую зависящему от ключа.
+
+Рассмотрим отношение StudentId, StudentName, GroupId, GroupName. В нем есть транзитивная цепочка ФЗ: StudentId → GroupId → GroupName. Выполним разбиение по последней ФЗ в цепочке, то есть по GroupId → GroupName. Получаем два новых отношения:
+1. GroupId, GroupName, ключи - GroupId, GroupName;
+2. StudentId, StudentName, GroupId, ключ - StudentId.
+Первое из них находится в 3НФ, так как в нем всего 1 неключевой атрибут и он напрямую зависит от ключа. Второе также находится в 3НФ, так как не существует ФЗ между неключевыми атрибутами - оба из них зависят непосредственно от ключа.
+
+Таким образом, все отношения теперь находятся в 3НФ:
+1. StudentId, CourseId, Mark, ключ - StudentId, CourseId;
+2. CourseId, CourseName, ключ - CourseId;
+3. LecturerId, LecturerName, ключ - LecturerId;
+4. GroupId, CourseId, LecturerId, ключ - GroupId, CourseId;
+5. GroupId, GroupName, ключи - GroupId и GroupName;
+6. StudentId, StudentName, GroupId, ключ - StudentId.
+
+----- Результат -----
+
+(CourseId, CourseName) => (CourseId, CourseName).
+(GroupId, CourseId, LecturerId, LecturerName) => (GroupId, CourseId, LecturerId); (LecturerId, LecturerName).
+(StudentId, StudentName, GroupId, GroupName) => (StudentId, StudentName, GroupId); (GroupId, GroupName).
+(StudentId, CourseId, Mark) => (StudentId, CourseId, Mark).
+
+===== НФБК =====
+
+----- Описание -----
+
+Как было упомянуто на лекции - 3НФ и неперекрывающиеся ключи - это НФБК. Во всех отношениях кроме GroupId, GroupName по одному ключу, а в GroupId, GroupName ключи неперекрываются, значит оно также находится в НФБК.
+
+----- Результат -----
+
+(CourseId, CourseName) => (CourseId, CourseName).
+(GroupId, CourseId, LecturerId) => (GroupId, CourseId, LecturerId).
+(LecturerId, LecturerName) => (LecturerId, LecturerName).
+(StudentId, StudentName, GroupId) => (StudentId, StudentName, GroupId).
+(GroupId, GroupName) => (GroupId, GroupName).
+(StudentId, CourseId, Mark) => (StudentId, CourseId, Mark).
+
+===== 4НФ =====
+
+----- Описание -----
+
+Заметим, что в следующих отношениях все ключи простые и эти отношения находятся в 3НФ:
+1. CourseId, CourseName;
+2. LecturerId, LecturerName;
+3. StudentId, StudentName, GroupId;
+4. GroupId, GroupName;
+По теореме Дейта-Фейгина 1 эти отношения находятся в 5НФ, а значит, они находятся и в 4НФ.
+
+Заметим, что у этих отношений не существуют простые ключи, а значит, к ним не применимы обе теоремы Дейта-Фейгина:
+1. GroupId, CourseId, LecturerId;
+2. StudentId, CourseId, Mark;
+
+Рассмотрим отношение GroupId, CourseId, LecturerId. В нем может быть всего шесть возможных нетривиальных МЗ. Перечислим их и опровергнем каждую с помощью контрпримеров:
+1. ∅ ↠ GroupId | CourseId, LecturerId - для разных пар (CourseId, LecturerId) в отношении одинаковые множества возможных GroupId (интуитивный пример - если Станкевич А. С. ведет курс дискретной математики, а Трифонов П. В. ведет курс теории кодирования у тех же самых групп). Это неверно, например, для отношения с двумя кортежами (G₁, C₁, L₁) и (G₂, C₂, L₂), так как {G | (G, C₁, L₁) ∈ R} = {G₁} ≠ {G₂} = {G | (G, C₂, L₂) ∈ R}.
+2. ∅ ↠ LecturerId | GroupId, CourseId - для разных пар (GroupId, CourseId) в отношении одинаковые множества возможных LecturerId (интуитивный пример - если курс математического анализа ведут у группы M31341, а курс теории кодирования у группы M34341, то вести оба курса должны одни и те же преподаватели). Это неверно, например, для отношения с двумя кортежами (G₁, C₁, L₁) и (G₂, C₂, L₂), так как {L | (G₁, C₁, L) ∈ R} = {L₁} ≠ {L₂} = {L | (G₂, C₂, L) ∈ R}.
+3. ∅ ↠ CourseId | LecturerId, GroupId - для разных пар (LecturerId, GroupId) в отношении одинаковые множества возможных CourseId (интуитивный пример - если Корнеев Г. А. ведет что-то у группы M31341 и Трифонов П. В. ведет что-то у группы M34341, то оба преподавателя должны вести одни и те же предметы). Это неверно, например, для отношения с двумя кортежами (G₁, C₁, L₁) и (G₂, C₂, L₂), так как {С | (G₁, C, L₁) ∈ R} = {С1} ≠ {С2} = {С | (G₂, C, L₂) ∈ R}.
+4. GroupId ↠ CourseId | LecturerId - при фиксированном GroupId, независимо от LecturerId множество возможных CourseId совпадает (интуитивный пример - если первому курсу Станкевич А. С. читает дискретную математику, то и Коргеев Г. А. читает первому курсу дискретную математику). Это неверно, например, для отношения с двумя кортежами (G, C₁, L₁) и (G, C₂, L₂), так как {C | (G, C, L₁) ∈ R} = {C₁} ≠ {C₂} = {C | (G, C, L₁) ∈ R}.
+5. LecturerId ↠ GroupId | CourseId - при фиксированном LecturerId, независимо от CourseId множество возможных GroupId совпадает (интуитивный пример - если Корнеев Г. А. читает курс баз данных четвертому курсе, то он и курс введения в программирование читает четвертому курсу). Это неверно, например, для отношения с двумя кортежами (G₁, C₁, L) и (G₂, C₂, L), так как {G | (G, C₁, L) ∈ R} = {G₁} ≠ {G₂} = {G | (G, C₂, L) ∈ R}.
+6. CourseId ↠ LecturerId | GroupId - при фиксированном CourseId, независимо от GroupId множество возможных LecturerId совпадает (интуитивный пример - если курс мат. анализа читает группе M34311 Кохась К. П., то и любой другой группе мат. анализ читает Кохась К. П.). Это неверно, например, для отношения с двумя кортежами (G₁, C, L₁) и (G₂, C, L₂), так как {L | (G₁, C, L) ∈ R} = {L₁} ≠ {L₂} = {L | (G₂, C, L) ∈ R}.
+Таким образом, ни одна нетривиальная МЗ не имеет место быть в данном отношении, поэтому оно находится в 4НФ.
+
+Аналогично для отношения StudentId, CourseId, Mark. В нем может быть всего шесть возможных нетривиальных МЗ. Перечислим их и опровергнем каждую с помощью контрпримеров:
+1. ∅ ↠ StudentId | CourseId, Mark - для разных пар (CourseId, Mark) в отношении одинаковые множества возможных StudentId (интуитивный пример - если все студенты получили по дискретной математике пять, то и тройки по введению в программирование получили все студенты). Это неверно, например, для отношения с двумя кортежами (S₁, C₁, M₁) и (S₂, C₂, M₂), так как {S | (S, C₁, M₁) ∈ R} = {S₁} ≠ {S₂} = {S | (S, C₂, M₂) ∈ R}.
+2. ∅ ↠ Mark | StudentId, CourseId - для разных пар (StudentId, CourseId) в отношении одинаковые множества возможных Mark (интуитивный пример - если студент получил по ввдению в программирование пять, то и по другим курсам другие студенты получали пятерки). Это неверно, например, для отношения с двумя кортежами (S₁, C₁, M₁) и (S₂, C₂, M₂), так как {M | (S₁, C₁, M) ∈ R} = {M₁} ≠ {M₂} = {M | (S₂, C₂, M) ∈ R}.
+3. ∅ ↠ CourseId | Mark, StudentId - для разных пар (Mark, StudentId) в отношении одинаковые множества возможных CourseId (интуитивный пример - если один студент получил 5 по курсам дискретной математики и введения в программирование, то и другие студенты могли получать оценки только по этим курсам). Это неверно, например, для отношения с двумя кортежами (S₁, C₁, M₁) и (S₂, C₂, M₂), так как {C | (S₁, C, M₁) ∈ R} = {C₁} ≠ {C₂} = {C | (S₂, C, M₂) ∈ R}.
+4. StudentId ↠ CourseId | Mark - при фиксированном StudentId, независимо от Mark множество возможных CourseId совпадает (интуитивный пример - если студент получил пять по введению в программирование и дискретной математике, то и четыре он получил по этим же курсам). Это неверно, например, для отношения с двумя кортежами (S, C₁, M₁) и (S, C₂, M₂), так как {C | (S, C, M₁) ∈ R} = {C₁} ≠ {C₂} = {C | (S, C, M₂) ∈ R}.
+5. Mark ↠ StudentId | CourseId - при фиксированном Mark, независимо от CourseId множество возможных StudentId совпадает (интуитивный пример - если пять по курсу дискретной математики получили какие-то студенты, то и пять по введению в программирование получили они же). Это неверно, например, для отношения с двумя кортежами (S₁, C₁, M) и (S₂, C₂, M), так как {S | (S, C₁, M) ∈ R} = {S₁} ≠ {S₂} = {S | (S, C₂, M) ∈ R}.
+6. CourseId ↠ Mark | StudentId - при фиксированном CourseId, независимо от StudentId множество возможных Mark совпадает (интуитивный пример - если по курсу дискретной математике студент получил пять, то и любой другой студент получил по дискретной математике пять). Это неверно, например, для отношения с двумя кортежами (S₁, C, M₁) и (S₂, C, M₂), так как {M | (S₁, C, M) ∈ R} = {M₁} ≠ {M₂} = {M | (S₂, C, M) ∈ R}.
+Таким образом, ни одна нетривиальная МЗ не имеет место быть в данном отношении, поэтому оно находится в 4НФ.
+
+----- Результат -----
+
+(CourseId, CourseName) => (CourseId, CourseName).
+(GroupId, CourseId, LecturerId) => (GroupId, CourseId, LecturerId).
+(LecturerId, LecturerName) => (LecturerId, LecturerName).
+(StudentId, StudentName, GroupId) => (StudentId, StudentName, GroupId).
+(GroupId, GroupName) => (GroupId, GroupName).
+(StudentId, CourseId, Mark) => (StudentId, CourseId, Mark).
+
+===== 5НФ =====
+
+----- Описание -----
+
+Как уже было сказано следующие отношения уже находятся в 5НФ (для этого применялась теорема Дейта-Фейгина 1):
+1. CourseId, CourseName;
+2. LecturerId, LecturerName;
+3. StudentId, StudentName, GroupId;
+4. GroupId, GroupName.
+
+Рассмотрим отношение GroupId, CourseId, LecturerId. Для доказательства того, что оно находится в 5НФ достаточно ограничиться ЗС *{X₁, X₂, ..., Xₙ}, удовлетворяющим следующим свойствам:
+1. Xᵢ ≠ {GroupId, CourseId, LecturerId}, так как нас интересуют только нетривиальные ЗС;
+2. n = 3, так как при n = 2 известно, что ЗС соответствует МЗ, а их отстуствие мы уже проверили, а при n > 3 выполняется X₄ ⊆ X₁ ∪ X₂ ∪ X₃ при любом пострении без повторений;
+3. |Xᵢ| = 1. Объяснение: не умаляя общности будем считать, что |X₁| = 2, тогда либо X₂ ⊆ X₁, либо X₃ ⊆ X₁ ∪ X₂.
+
+Под все эти условия подходит единственная ЗС: *{{GroupId}, {CourseId}, {LecturerId}}. Приведем для нее контрпример. Если исходное отношение содержало два кортежа (G₁, C₁, L) и (G₂, C₂, L), то его проекция на GroupId будет содержать два кортежа - (G₁), (G₂), проекция на CourseId будет содержать два кортежа - (C₁), (C₂), проекция на LecturerId будет содержать один кортеж - (L). А композиция этих проекций будет содердать четыре кортежа: (G₁, C₁, L), (G₂, C₂, L), (G₂, C₁, L), (G₁, C₂, L) - два последних из которых не входили в исходное отношение. Так что такая ЗС не выполняется.
+
+Аналогично для отношения StudentId, CourseId, Mark. Есть смысл рассматривать только одну ЗС: *{{StudentId}, {CourseId}, {Mark}}. Для нее подходит следующий контрпример: исходное отношение содержало два кортежа (S₁, C₁, M) и (S₂, C₂, M), его проекция на StudentId содержит два кортежа - (S₁), (S₂), на CourseId также два - (C₁), (C₂), а на Mark - (M). Композиция перечисленных проекций содержит четыре кортежа (S₁, C₁, M), (S₂, C₂, M), (S₁, C₂, M) и (S₂, C₁, M) - два последних из которых не входили в исходное отношение. Таким образом, такая ЗС не выполняется.
+
+Итак, мы доказали, что все отношения находятся в 5НФ.
+
+----- Результат -----
+
+(CourseId, CourseName) => (CourseId, CourseName).
+(GroupId, CourseId, LecturerId) => (GroupId, CourseId, LecturerId).
+(LecturerId, LecturerName) => (LecturerId, LecturerName).
+(StudentId, StudentName, GroupId) => (StudentId, StudentName, GroupId).
+(GroupId, GroupName) => (GroupId, GroupName).
+(StudentId, CourseId, Mark) => (StudentId, CourseId, Mark).

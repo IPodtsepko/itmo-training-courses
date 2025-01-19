@@ -1,0 +1,18 @@
+select
+    TeamId,
+    sum(byContest) as Opened
+from
+    (
+        select
+            TeamId,
+            ContestId,
+            count(distinct Letter) as byContest
+        from
+            Runs natural
+            join Sessions
+        group by
+            TeamId,
+            ContestId
+    ) S
+group by
+    TeamId;

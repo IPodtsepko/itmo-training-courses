@@ -1,0 +1,8 @@
+<svg height="100" width="100">
+  <rect x="0" y="0" width="50" height="50" fill="#00695c"/>
+  <polygon points="25, 50, 50, 50, 50, 75, 25, 75" fill="#ffffff"/>
+  <rect x="12.5" y="43.75" width="8.75" height="8.75" fill="#00695c"/>
+  <rect x="37.5" y="43.75" width="8.75" height="8.75" fill="#ffffff"/>
+  <rect x="25" y="71.25" width="8.75" height="8.75" fill="#00695c"/>
+  <rect x="37.5" y="71.25" width="8.75" height="8.75" fill="#ffffff"/>
+</svg>

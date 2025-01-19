@@ -1,0 +1,9 @@
+HasMark(StudentId, CourseId) :- Marks(StudentId, CourseId, _).
+ExistsStudentWithoutMark(GroupId, CourseId) :-
+    Students(StudentId, _, GroupId),
+    Courses(CourseId, _),
+    ¬ HasMark(StudentId, CourseId).
+ForAllStudentsHasMark(GroupId, CourseId) :-
+    Groups(GroupId, _),
+    Courses(CourseId, _),
+    ¬ ExistsStudentWithoutMark(GroupId, CourseId).

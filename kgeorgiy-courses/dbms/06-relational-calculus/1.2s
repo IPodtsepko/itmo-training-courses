@@ -1,0 +1,15 @@
+select
+    StudentId,
+    StudentName,
+    GroupId
+from
+    Students S
+where
+    GroupId in (
+        select
+            GroupId
+        from
+            Groups
+        where
+            GroupName = :GroupName
+    );

@@ -1,0 +1,7 @@
+HasMark(StudentId, CourseId) :-
+    Marks(StudentId, CourseId, _).
+Debt(StudentName, CourseName) :-
+    Students(StudentId, StudentName, GroupId),
+    Plan(GroupId, CourseId, _),
+    Courses(CourseId, CourseName),
+    ¬ HasMark(StudentId, CourseId).

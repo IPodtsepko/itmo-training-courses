@@ -1,0 +1,35 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Draw the house body -->
+  <rect x="100" y="150" width="200" height="150" fill="lightblue" stroke="black" stroke-width="3"/>
+
+  <!-- Draw the roof -->
+  <polygon points="100,150 300,150 200,50" fill="brown" stroke="black" stroke-width="3"/>
+
+  <!-- Draw the door -->
+  <rect x="175" y="220" width="50" height="80" fill="saddlebrown" stroke="black" stroke-width="3"/>
+  <!-- Door handle -->
+  <circle cx="215" cy="260" r="5" fill="gold"/>
+
+  <!-- Draw the windows -->
+  <rect x="130" y="180" width="40" height="40" fill="white" stroke="black" stroke-width="3"/>
+  <rect x="230" y="180" width="40" height="40" fill="white" stroke="black" stroke-width="3"/>
+
+  <!-- Window panes -->
+  <line x1="150" y1="180" x2="150" y2="220" stroke="black" stroke-width="3"/>
+  <line x1="130" y1="200" x2="170" y2="200" stroke="black" stroke-width="3"/>
+  <line x1="250" y1="180" x2="250" y2="220" stroke="black" stroke-width="3"/>
+  <line x1="230" y1="200" x2="270" y2="200" stroke="black" stroke-width="3"/>
+
+  <!-- Draw the chimney -->
+  <rect x="230" y="50" width="20" height="40" fill="gray" stroke="black" stroke-width="3"/>
+
+  <!-- Draw a pathway -->
+  <polygon points="170,300 230,300 220,350 180,350" fill="gray" stroke="black" stroke-width="3"/>
+
+  <!-- Draw a tree -->
+  <circle cx="50" cy="250" r="30" fill="green" stroke="black" stroke-width="3"/>
+  <rect x="40" y="270" width="20" height="40" fill="saddlebrown" stroke="black" stroke-width="3"/>
+
+  <!-- Sun -->
+  <circle cx="350" cy="50" r="40" fill="yellow" stroke="black" stroke-width="3"/>
+</svg>

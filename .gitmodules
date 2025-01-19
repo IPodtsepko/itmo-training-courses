@@ -1,0 +1,27 @@
+[submodule "blockchain/01-smart-contract-overview"]
+	path = blockchain/01-smart-contract-overview
+	url = https://github.com/IPodtsepko/blockchain-hw-0
+[submodule "blockchain/02-course-project-on-the-topic-verifiable-credentials"]
+	path = blockchain/02-course-project-on-the-topic-verifiable-credentials
+	url = git@github.com:IPodtsepko/verifiable-credentials.git
+[submodule "blockchain/03-etherium-monitoring"]
+	path = blockchain/03-etherium-monitoring
+	url = git@github.com:IPodtsepko/etherium-monitoring.git
+[submodule "blockchain/05-voting"]
+	path = blockchain/05-voting
+	url = git@github.com:IPodtsepko/voting.git
+[submodule "blockchain/06-flash-swap"]
+	path = blockchain/06-flash-swap
+	url = git@github.com:IPodtsepko/flash-swap.git
+[submodule "blockchain/07-ticket-shuffler"]
+	path = blockchain/07-ticket-shuffler
+	url = git@github.com:IPodtsepko/ticket-shuffler.git
+[submodule "blockchain/08-ipfs-dapp"]
+	path = blockchain/08-ipfs-dapp
+	url = git@github.com:IPodtsepko/ipfs-dapp.git
+[submodule "blockchain/nft-auction"]
+	path = blockchain/nft-auction
+	url = git@github.com:IPodtsepko/nft-auction.git
+[submodule "machine-learning/notes"]
+	path = machine-learning/notes
+	url = git@github.com:IPodtsepko/machine-learning-notes.git

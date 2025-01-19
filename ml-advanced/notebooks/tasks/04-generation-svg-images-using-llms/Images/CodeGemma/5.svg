@@ -1,0 +1,17 @@
+<svg width="200" height="250" viewBox="0 0 200 250">
+
+<!-- House Rectangle -->
+<rect x="50" y="100" width="100" height="150" fill="#b58340" />
+
+<!-- Roof Triangle -->
+<polygon points="100 50, 150 0, 50 0" fill="#a14c15" />
+<polygon points="100 100, 150 50, 50 50" fill="#a14c15" />
+
+<!-- Door Rectangle -->
+<rect x="80" y="175" width="40" height="75" fill="#7f553b" />
+
+<!-- Windows -->
+<rect x="70" y="125" width="20" height="20" fill="#c0c0c0" />
+<rect x="130" y="125" width="20" height="20" fill="#c0c0c0" />
+
+</svg>

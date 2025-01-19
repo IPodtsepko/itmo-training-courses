@@ -1,0 +1,32 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  viewBox="0 0 200 200"
+  width="200"
+  height="200"
+>
+  <!-- House base -->
+  <rect x="50" y="80" width="100" height="80" fill="#8B0000" />
+
+  <!-- Roof -->
+  <polygon points="50,80 150,80 100,30" fill="#B22222" />
+
+  <!-- Door -->
+  <rect x="90" y="120" width="20" height="40" fill="#654321" />
+
+  <!-- Door knob -->
+  <circle cx="105" cy="140" r="2" fill="#FFD700" />
+
+  <!-- Windows -->
+  <rect x="60" y="90" width="20" height="20" fill="#ADD8E6" />
+  <rect x="120" y="90" width="20" height="20" fill="#ADD8E6" />
+
+  <!-- Window frames -->
+  <line x1="60" y1="100" x2="80" y2="100" stroke="#000" stroke-width="1" />
+  <line x1="70" y1="90" x2="70" y2="110" stroke="#000" stroke-width="1" />
+  <line x1="120" y1="100" x2="140" y2="100" stroke="#000" stroke-width="1" />
+  <line x1="130" y1="90" x2="130" y2="110" stroke="#000" stroke-width="1" />
+
+  <!-- Ground -->
+  <rect x="0" y="160" width="200" height="40" fill="#228B22" />
+</svg>

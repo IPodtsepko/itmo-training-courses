@@ -1,0 +1,15 @@
+<svg width="800" height="600">
+    <!-- Main body of the house -->
+    <rect x="150-size[0]*0.03/2" y="200-size[1]/2" width="800" height="600"/>
+
+    <!-- Triangle representing roof, with base as main rectangle and equal altitude to half the size variable used for x & y dimension -->
+    <polygon points="150-size[0]*0.03/2,200-size[1]/4" fill="black"/>
+
+    <!-- Rectangular door with width as calculated by multiplying 'door_width' and height dividing size variable used for y dimension divided by 3 -->
+    <rect x="150-(8*window_spacing)+(2+size[0]*0.4)" y="200-size[1]/6" width={{size[0]*.03}} height=40/>
+
+    <!-- Windows - using for loop to simulate multiple windows, created as rectangles with similar approach but different spacing and positioned symmetrically around center point which is set at (250+(8*window_spacing), 1/9th of size[1]) -->
+    {%for i in range(2*(window_count+1))%}
+        <rect x="{{300-(i-int((door_width)* window_spacing)-size[0]*0.4+(8*window_spacing)))}}" y={{650/9}} width=20 height=40 fill="#DDD"/>
+    {%endfor%}
+</svg>

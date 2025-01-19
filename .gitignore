@@ -1,1 +1,19 @@
-.vscode
+# IDEs and Editors
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+env/
+venv/
+
+# Node.js
+node_modules/
+
+# Logs and Temporary Files
+*.log
+*.tmp

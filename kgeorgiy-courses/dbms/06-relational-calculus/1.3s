@@ -1,0 +1,11 @@
+select
+    Students.StudentId,
+    StudentName,
+    GroupId
+from
+    Students,
+    Marks
+where
+    Students.StudentId = Marks.StudentId
+    and CourseId = :CourseId
+    and Mark = :Mark

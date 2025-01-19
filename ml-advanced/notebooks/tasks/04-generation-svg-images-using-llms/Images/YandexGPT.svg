@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300">
+  <rect x="50" y="50" width="200" height="150" style="fill: #7F6DAA; stroke: black; stroke-width: 2px;" />
+
+  <!-- Крыша -->
+  <polygon points="250,100 300,200 150,200" fill="#4A3C8C" />
+
+  <!-- Дверь -->
+  <rect x="100" y="175" width="50" height="50" style="fill: white; stroke: black; stroke-width: 2px" />
+
+  <!-- Окна -->
+  <g transform="translate(150,50)">
+    <rect x="-25" y="-25" width="50" height="50" style="fill:white; stroke:black; stroke-width:2px" />
+    <rect x="0" y="-25" width="50" height="50" style="fill:white; stroke:black; stroke-width:2px" />
+  </g>
+</svg>

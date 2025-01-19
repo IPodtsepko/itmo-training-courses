@@ -1,0 +1,11 @@
+select
+    Students.StudentId,
+    count(distinct Plan.CourseId) as Total,
+    count(distinct case when Mark is not null then Plan.CourseId end) as Passed,
+    count(distinct case when Mark is null then Plan.CourseId end) as Failed
+from
+    Students
+    left join Plan on Students.GroupId = Plan.GroupId
+    left join Marks on Students.StudentId = Marks.StudentId and Plan.CourseId = Marks.CourseId
+group by
+    Students.StudentId

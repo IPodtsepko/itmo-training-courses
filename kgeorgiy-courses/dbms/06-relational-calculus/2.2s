@@ -1,0 +1,18 @@
+select
+    StudentId,
+    StudentName,
+    GroupName
+from
+    Students S,
+    Groups G
+where
+    S.GroupId = G.GroupId
+    and not exists (
+        select
+            *
+        from
+            Marks M
+        where
+            S.StudentId = M.StudentId
+            and CourseId = :CourseId
+    )

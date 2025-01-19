@@ -1,0 +1,1 @@
+π{ProblemName}(Problems ∖ π{ContestId, Letter, ProblemName}(Runs ⋈ Sessions ⋈ Problems))

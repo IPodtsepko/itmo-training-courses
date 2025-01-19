@@ -1,0 +1,14 @@
+select CourseId, GroupId from Marks, Students
+except
+select CourseId, GroupId from (
+    select
+        CourseId, Students.StudentId, GroupId
+    from
+        Marks, Students
+    except
+    select
+        CourseId, Students.StudentId, GroupId
+    from
+        Marks
+        inner join Students on Marks.StudentId = Students.StudentId
+) S

@@ -1,0 +1,1 @@
+π{CourseId, StudentId}(Marks) ⋇ π{StudentId, GroupId}(Students)

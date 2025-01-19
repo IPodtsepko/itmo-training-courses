@@ -1,0 +1,18 @@
+select
+    StudentId
+from
+    Students
+except
+select
+    distinct S.StudentId
+from
+    Students S,
+    Plan P,
+    Lecturers L,
+    Marks M
+where
+    S.GroupId = P.GroupId
+    and P.LecturerId = L.LecturerId
+    and S.StudentId = M.StudentId
+    and P.CourseId = M.CourseId
+    and LecturerName = :LecturerName;

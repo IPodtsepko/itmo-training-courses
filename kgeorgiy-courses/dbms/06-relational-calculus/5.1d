@@ -1,0 +1,5 @@
+HasMarkByLecturer(StudentId) :-
+    Students(StudentId, _, GroupId),
+    Plan(GroupId, CourseId, LecturerId),
+    Lecturers(LecturerId, :LecturerName),
+    Marks(StudentId, CourseId, _).

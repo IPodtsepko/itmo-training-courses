@@ -1,0 +1,51 @@
+<html>
+
+<head>
+    <title>C++ Highlighter</title>
+    <style>
+        @import url(https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital@0;1&display=swap);
+
+        body {font-family: 'JetBrains Mono', monospace;font-size: 14px;color: rgb(220, 223, 228);background-color: rgb(40, 44, 52);}
+        span.keyword {color: rgb(198, 120, 221);}
+        span.string {color: rgb(152, 195, 121);}
+        span.primitive {color: rgb(229, 192, 123);}
+        span.member {font-style: italic;color: rgb(86, 182, 194);}
+        span.function {color: rgb(97, 175, 239);}
+        span.operator {color: rgb(86, 182, 194);}
+        span.numeration {color: rgb(117, 117, 117);background-color: rgb(45, 49, 57);}
+        span.macro {color: rgb(224, 108, 117);}
+        span.constant {font-style: italic;color: rgb(224, 108, 117);}
+    </style>
+
+</head>
+
+<body>
+<span class="numeration">&nbsp;&nbsp;&nbsp;1&nbsp;</span>&nbsp;<span class="macro">#include</span>&nbsp;<span class="string">&lt;iostream&gt;</span><br>
+<span class="numeration">&nbsp;&nbsp;&nbsp;2&nbsp;</span>&nbsp;<span class="macro">#include</span>&nbsp;<span class="string">"custom"</span><br>
+<span class="numeration">&nbsp;&nbsp;&nbsp;3&nbsp;</span>&nbsp;<br>
+<span class="numeration">&nbsp;&nbsp;&nbsp;4&nbsp;</span>&nbsp;<span class="keyword">inline</span>&nbsp;<span class="keyword">static</span>&nbsp;std::string&nbsp;<span class="constant">PRINT_FORMAT</span>&nbsp;<span class="operator">=</span>&nbsp;<span class="string">"%d\n"</span><span class="operator">;</span><br>
+<span class="numeration">&nbsp;&nbsp;&nbsp;5&nbsp;</span>&nbsp;<br>
+<span class="numeration">&nbsp;&nbsp;&nbsp;6&nbsp;</span>&nbsp;<span class="keyword">int</span>&nbsp;<span class="function">read_value</span><span class="operator">(</span><span class="operator">)</span>&nbsp;<span class="operator">{</span><br>
+<span class="numeration">&nbsp;&nbsp;&nbsp;7&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">int</span>&nbsp;value<span class="operator">;</span><br>
+<span class="numeration">&nbsp;&nbsp;&nbsp;8&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scanf<span class="operator">(</span><span class="string">"%d%s"</span>,&nbsp;&value<span class="operator">)</span><span class="operator">;</span><br>
+<span class="numeration">&nbsp;&nbsp;&nbsp;9&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span>&nbsp;value<span class="operator">;</span><br>
+<span class="numeration">&nbsp;&nbsp;10&nbsp;</span>&nbsp;<span class="operator">}</span><br>
+<span class="numeration">&nbsp;&nbsp;11&nbsp;</span>&nbsp;<br>
+<span class="numeration">&nbsp;&nbsp;12&nbsp;</span>&nbsp;<span class="keyword">int</span>&nbsp;<span class="function">main</span><span class="operator">(</span><span class="operator">)</span>&nbsp;<span class="operator">{</span><br>
+<span class="numeration">&nbsp;&nbsp;13&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">static</span>&nbsp;<span class="keyword">bool</span>&nbsp;good&nbsp;<span class="operator">=</span>&nbsp;<span class="primitive"><span class="keyword">false</span></span><span class="operator">;</span><br>
+<span class="numeration">&nbsp;&nbsp;14&nbsp;</span>&nbsp;<br>
+<span class="numeration">&nbsp;&nbsp;15&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">int</span>&nbsp;value&nbsp;<span class="operator">=</span>&nbsp;read_value<span class="operator">(</span><span class="operator">)</span><span class="operator">;</span><br>
+<span class="numeration">&nbsp;&nbsp;16&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;good&nbsp;<span class="operator">=</span>&nbsp;good&nbsp;<span class="operator">||</span>&nbsp;value&nbsp;<span class="operator">%</span>&nbsp;<span class="primitive">2</span>&nbsp;<span class="operator">==</span>&nbsp;<span class="primitive">1</span><span class="operator">;</span><br>
+<span class="numeration">&nbsp;&nbsp;17&nbsp;</span>&nbsp;<br>
+<span class="numeration">&nbsp;&nbsp;18&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value&nbsp;<span class="operator">=</span>&nbsp;read_value<span class="operator">(</span><span class="operator">)</span><span class="operator">;</span><br>
+<span class="numeration">&nbsp;&nbsp;19&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value&nbsp;<span class="operator">+=</span>&nbsp;<span class="primitive">1</span><span class="operator">;</span><br>
+<span class="numeration">&nbsp;&nbsp;20&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;good&nbsp;<span class="operator">=</span>&nbsp;good&nbsp;<span class="operator">&&</span>&nbsp;~<span class="operator">(</span>value&nbsp;<span class="operator">^</span>&nbsp;<span class="primitive">255</span><span class="operator">)</span>&nbsp;<span class="operator">|</span>&nbsp;<span class="primitive"><span class="keyword">true</span></span>&nbsp;<span class="operator">+</span>&nbsp;<span class="primitive">12.0</span><span class="operator">;</span><br>
+<span class="numeration">&nbsp;&nbsp;21&nbsp;</span>&nbsp;<br>
+<span class="numeration">&nbsp;&nbsp;22&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="operator">++</span>value&nbsp;<span class="operator">=</span>&nbsp;good<span class="operator">;</span><br>
+<span class="numeration">&nbsp;&nbsp;23&nbsp;</span>&nbsp;<br>
+<span class="numeration">&nbsp;&nbsp;24&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf<span class="operator">(</span><span class="constant">PRINT_FORMAT</span>,&nbsp;object.<span class="member">mField</span>-&gt;<span class="member">getArray</span><span class="operator">(</span><span class="operator">)</span><span class="operator">[</span>a<span class="operator">]</span>&nbsp;<span class="operator">&&</span>&nbsp;<span class="primitive"><span class="string">'\t'</span></span><span class="operator">)</span><span class="operator">;</span><br>
+<span class="numeration">&nbsp;&nbsp;25&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span>&nbsp;<span class="primitive">0</span><span class="operator">;</span><br>
+<span class="numeration">&nbsp;&nbsp;26&nbsp;</span>&nbsp;<span class="operator">}</span><br>
+<span class="numeration">&nbsp;&nbsp;27&nbsp;</span>&nbsp;</body>
+
+</html>

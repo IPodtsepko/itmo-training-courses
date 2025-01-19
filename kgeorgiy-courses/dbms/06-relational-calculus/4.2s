@@ -1,0 +1,29 @@
+select
+    StudentName,
+    CourseName
+from
+    Students S,
+    Courses C,
+    (
+        select
+            distinct StudentId,
+            CourseId
+        from
+            Students S,
+            Plan P
+        where
+            S.GroupId = P.GroupId
+            and exists (
+                select
+                    *
+                from
+                    Marks M
+                where
+                    M.StudentId = S.StudentId
+                    and M.CourseId = P.CourseId
+                    and Mark <= 2
+            )
+    ) Q
+where
+    S.StudentId = Q.StudentId
+    and C.CourseId = Q.CourseId

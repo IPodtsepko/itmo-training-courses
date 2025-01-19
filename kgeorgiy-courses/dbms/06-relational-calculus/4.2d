@@ -1,0 +1,16 @@
+StudentHasMarkByCourse(StudentId, CourseId) :- Marks(StudentId, CourseId, _).
+StudentsHasSatisfactoryMarkByCourse(StudentId, CourseId) :-
+    Marks(StudentId, CourseId, Mark),
+    Mark > 2.
+StudentHasDebtByCourse(StudentId, CourseId) :-
+    Students(StudentId, _, GroupId),
+    Plan(GroupId, CourseId, _),
+    ¬ StudentHasMarkByCourse(StudentId, CourseId).
+StudentHasDebtByCourse(StudentId, CourseId) :-
+    Students(StudentId, _, GroupId),
+    Plan(GroupId, CourseId, _),
+    ¬ StudentsHasSatisfactoryMarkByCourse(StudentId, CourseId).
+Result(StudentName, CourseName) :-
+    Students(StudentId, StudentName, _),
+    Courses(CourseId, CourseName),
+    StudentHasDebtByCourse(StudentId, CourseId).

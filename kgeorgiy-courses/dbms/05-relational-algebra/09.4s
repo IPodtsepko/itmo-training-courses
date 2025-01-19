@@ -1,0 +1,22 @@
+select
+    GroupName, AvgAvgMark
+from
+    Groups
+    natural join (
+        select
+            GroupId,
+            avg(AvgMark) as AvgAvgMark
+        from (
+            select
+                Groups.GroupId,
+                avg(cast(Mark as double)) as AvgMark
+            from
+                Groups
+                left join Students on Groups.GroupId = Students.GroupId
+                left join Marks on Students.StudentId = Marks.StudentId
+            group by
+                Groups.GroupId, Students.StudentId
+        ) StatisticsWithGroupId
+        group by
+            GroupId
+    ) Statistics

@@ -1,0 +1,24 @@
+select
+    distinct StudentId,
+    StudentName,
+    GroupName
+from
+    Students S,
+    Groups G,
+    Plan P,
+    Courses C
+where
+    S.GroupId = G.GroupId
+    and S.GroupId = P.GroupId
+    and P.CourseId = C.CourseId
+    and CourseName = :CourseName
+    and StudentId not in (
+        select
+            StudentId
+        from
+            Marks M,
+            Courses C
+        where
+            M.CourseId = C.CourseId
+            and CourseName = :CourseName
+    )

@@ -1,0 +1,9 @@
+select
+    distinct TeamId
+from
+    Sessions S,
+    Runs R
+where
+    R.Accepted = 0
+    and S.ContestId = :ContestId
+    and S.SessionId = R.SessionId;

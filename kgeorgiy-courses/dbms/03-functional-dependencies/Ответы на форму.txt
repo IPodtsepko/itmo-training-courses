@@ -1,0 +1,201 @@
+1. Функциональные зависимости
+
+-- Будем рассматривать правила, в левой части которых содержатся только ID, так как если бы мы нашли какое-то интересное правило, у которого в левой части не ID - можно заменить этот атрибут на соответствующий ID (от него функционально зависит этот атрибут) и ничего не изменится.
+-- У студента должно быть ровно одно имя, а также он находится в единственной группе (ее название также определяется единственным образом, однако бессмысленно добавлять GroupName в данное правило, так как этот атрибут функционально зависит от GroupId и удобнее выделить данную зависимость в отдельное правило).
+-- Курсов, лекторов и оценок у студентов может быть много, так что они не зависят функционально от StudentId.
+StudentId -> StudentName, GroupId
+-- У группы должно быть ровно одно название.
+-- Студентов, курсов, лекторов и оценок, ассоциированных с группой может быть много.
+GroupId -> GroupName
+-- У курса должно быть ровно одно название.
+-- Курс может читаться разным группам, разным студентам и все студенты могут получать по нему разные оценки, лекторы у одного и того же курса также могут быть разными (Мат. анализ от О. Л. Семеновой и от К. П. Кохася).
+CourseId -> CourseName
+-- У лектора должно быть ровно одно имя.
+-- Лектор может вести несколько курсов в нескольких группах, ставить разным студентам разные оценки.
+LecturerId -> LecturerName
+-- Далее рассмотрим комбинации идентификаторов.
+-- Конкретный студент получает единственную оценку по конкретному курсу.
+CourseId, StudentId -> Mark
+-- У конкретной группы курс ведет единственный лектор (не может быть несколько одинаковых курсов у одной и той же группы в одном семестре, но от разных преподавателей - это что-то странное):
+CourseId, GroupId -> LecturerId
+
+2. Ключи
+
+2.1. Процесс определения ключей
+
+Вариант 1
+Я написал код на Python который делает буквально следующее:
+1) Инициализирует K списком всех атрибутов;
+2) Если K надключ (а проверить это можно, посмотрев на мощность его замыкания по ФЗ; для надключа она должна быть равна числу атрибутов, то есть девяти),
+   то запускается рекурсивно для всех его подключей меньшей на 1 мощности. Если никто из подключей не оказался надключом, то он считается ключом.
+   Крайний случай рекурсии - надключ длины один. Он считается ключом, так как в реальном мире в базе данных было бы больше одной записи и пустое множество не являлось бы
+   надключом.
+Де-факто он делает полный перебор.
+
+Вариант 2.
+Если мы примерно что-то представляем о ключах (а я после выполнения варианта 1 представляю), то можно делать как на практике. Заметим три факта:
+1) Замыкание всех атрибутов кроме StudentId не содержит StudentId (ни одно правило в принципе не может StudentId добавить);
+2) Замыкание всех атрибутов кроме CourseId не содержит CourseId (ни одно правило в принципе не может CourseId добавить);
+3) Замыкание множества { StudentId, CourseId } равно всему множеству:
+    3.1) Первый проход по S:
+        3.1.1) Применяем правило StudentId -> StudentName, GroupId:
+        { StudentId, CourseId, StudentName, GroupId }
+        3.1.2) Применяем правило GroupId -> GroupName:
+        { StudentId, CourseId, StudentName, GroupId, GroupName }
+        3.1.3) Применяем правило CourseId -> CourseName:
+        { StudentId, CourseId, StudentName, GroupId, GroupName, CourseName }
+        3.1.4) Не удается применить правило LecturerId -> LecturerName
+        3.1.5) Применяем правило CourseId, StudentId -> Mark:
+        { StudentId, CourseId, StudentName, GroupId, GroupName, CourseName, Mark }
+        3.1.6) Применяем правило CourseId, GroupId -> LecturerId:
+        { StudentId, CourseId, StudentName, GroupId, GroupName, CourseName, Mark, LecturerId }
+    3.2) Поскольку были изменения - совершаем второй проход, осталось единственное непримененное правило - LecturerId -> LecturerName. Применяем его:
+    { StudentId, CourseId, StudentName, GroupId, GroupName, CourseName, Mark, LecturerId, LecturerName }
+Итак, из (1) и (2) следует, что StudentId и CourseId входят в любой надключ, а (3) означает, что они вдвоем являются надключом. Значит, { StudentId, CourseId } - единственный ключ.
+
+P.S.: В данном случае догадаться до того, что стоит проверить именно эти атрибуты можно было по тому, что они не входят ни в одну правую часть правил, а значит, они не восстанавливаются замыканием после удаления.
+
+2.2. Полученные ключи
+
+StudentId, CourseId
+
+3. Замыкания множества атрибутов
+
+3.1. GroupId, CourseId
+
+CourseId, GroupId, GroupName
+CourseId, GroupId, GroupName, CourseName
+CourseId, GroupId, GroupName, LecturerId, CourseName
+CourseId, GroupId, LecturerName, GroupName, LecturerId, CourseName
+
+3.2. StudentId, CourseId
+
+CourseId, GroupId, StudentId, StudentName
+CourseId, GroupId, StudentName, GroupName, StudentId
+CourseId, GroupId, CourseName, StudentName, GroupName, StudentId
+CourseId, GroupId, CourseName, Mark, StudentName, GroupName, StudentId
+CourseId, GroupId, CourseName, Mark, StudentName, GroupName, LecturerId, StudentId
+StudentName, GroupName, CourseName, StudentId, CourseId, GroupId, LecturerName, Mark, LecturerId
+
+3.3. StudentId, LecturerId
+
+StudentName, GroupId, LecturerId, StudentId
+GroupId, StudentName, GroupName, LecturerId, StudentId
+LecturerName, GroupId, StudentName, GroupName, LecturerId, StudentId
+
+4. Неприводимое множество функциональных зависимостей
+
+4.1d. Первый этап
+
+Самый простой этап - расщипление правых частей. Актуально только для одного правила (у остальных в правых частях содержатся множества размера 1):
+StudentId -> StudentName, GroupId
+
+Согласно алгоритму оно разбивается на 2:
+StudentId -> StudentName
+StudentId -> GroupId
+
+4.1r. Результаты первого этапа
+
+StudentId -> StudentName
+StudentId -> GroupId
+GroupId -> GroupName
+CourseId -> CourseName
+LecturerId -> LecturerName
+CourseId, StudentId -> Mark
+CourseId, GroupId -> LecturerId
+
+4.2d. Второй этап
+
+На втором этапе происходит удаление избыточных атрибутов из левых частей. Рассматривать правила, у которых в левых частях по одному атрибуту не будем, так как можно считать, что у нас больше одной записи.
+
+1. Рассмотрим правило CourseId, StudentId -> Mark. Из него можно удалить CourseId, если Mark принадлежит замыканию { StudentId }, однако оно равно { StudentName, GroupId, GroupName, StudentId } и не содержит Mark. Также из него можно удалить StudentId, если Mark принадлежит замыканию { CourseId }, однако оно равно { CourseId, CourseName} и не содержит Mark. Таким образом, данное правило остается без изменений;
+2. Рассмотрим правило CourseId, GroupId -> LecturerId. Из него можно удалить CourseId, если LecturerId принадлежит замыканию { GroupId }, однако оно равно { GroupId, GroupName } и не содержит LecturerId. Также из него можно удалить GroupId, если LecturerId принадлежит замыканию { CourseId }, однако оно равно { CourseId, CourseName} и не содержит LecturerId. Так что данное правило также остается без изменений;
+
+4.2r. Результаты второго этапа
+
+StudentId -> StudentName
+StudentId -> GroupId
+GroupId -> GroupName
+CourseId -> CourseName
+LecturerId -> LecturerName
+CourseId, StudentId -> Mark
+CourseId, GroupId -> LecturerId
+
+4.3d. Третий этап
+
+На третьем этапе мы пробуем убирать лишние правила. Формально: правило X -> Y можно удалить, если Y является подмножеством замыкания X по множеству ФЗ без этого правила. Рассмотрим для каждого правила:
+
+1) Пробуем удалить правило StudentId -> StudentName. Построим замыкание { StudentId } по множеству ФЗ:
+StudentId -> GroupId
+GroupId -> GroupName
+CourseId -> CourseName
+LecturerId -> LecturerName
+CourseId, StudentId -> Mark
+CourseId, GroupId -> LecturerId
+Это замыкание равно { GroupId, GroupName, StudentId } и оно не содержит { StudentName } как подмножество. Таким образом, правило удалить нельзя.
+
+2) Пробуем удалить правило StudentId -> GroupId. Построим замыкание { StudentId } по множеству ФЗ:
+StudentId -> StudentName
+GroupId -> GroupName
+CourseId -> CourseName
+LecturerId -> LecturerName
+CourseId, StudentId -> Mark
+CourseId, GroupId -> LecturerId
+Это замыкание равно { StudentName, StudentId } и оно не содержит { GroupId } как подмножество. Таким образом, правило удалить нельзя.
+
+3) Пробуем удалить правило GroupId -> GroupName. Построим замыкание { GroupId } по множеству ФЗ:
+StudentId -> StudentName
+StudentId -> GroupId
+CourseId -> CourseName
+LecturerId -> LecturerName
+CourseId, StudentId -> Mark
+CourseId, GroupId -> LecturerId
+Это замыкание равно { GroupId } и оно не содержит { GroupName } как подмножество. Таким образом, правило удалить нельзя.
+
+4) Пробуем удалить правило CourseId -> CourseName. Построим замыкание { CourseId } по множеству ФЗ:
+StudentId -> StudentName
+StudentId -> GroupId
+GroupId -> GroupName
+LecturerId -> LecturerName
+CourseId, StudentId -> Mark
+CourseId, GroupId -> LecturerId
+Это замыкание равно { CourseId } и оно не содержит { CourseName } как подмножество. Таким образом, правило удалить нельзя.
+
+5) Пробуем удалить правило LecturerId -> LecturerName. Построим замыкание { LecturerId } по множеству ФЗ:
+StudentId -> StudentName
+StudentId -> GroupId
+GroupId -> GroupName
+CourseId -> CourseName
+CourseId, StudentId -> Mark
+CourseId, GroupId -> LecturerId
+Это замыкание равно { LecturerId } и оно не содержит { LecturerName } как подмножество. Таким образом, правило удалить нельзя.
+
+6) Пробуем удалить правило CourseId, StudentId -> Mark. Построим замыкание { CourseId, StudentId } по множеству ФЗ:
+StudentId -> StudentName
+StudentId -> GroupId
+GroupId -> GroupName
+CourseId -> CourseName
+LecturerId -> LecturerName
+CourseId, GroupId -> LecturerId
+Это замыкание равно { CourseId, GroupId, CourseName, LecturerName, StudentName, GroupName, LecturerId, StudentId } и оно не содержит { Mark } как подмножество. Таким образом, правило удалить нельзя.
+
+7) Пробуем удалить правило CourseId, GroupId -> LecturerId. Построим замыкание { CourseId, GroupId } по множеству ФЗ:
+StudentId -> StudentName
+StudentId -> GroupId
+GroupId -> GroupName
+CourseId -> CourseName
+LecturerId -> LecturerName
+CourseId, StudentId -> Mark
+Это замыкание равно { CourseId, GroupId, GroupName, CourseName } и оно не содержит { LecturerId } как подмножество. Таким образом, правило удалить нельзя.
+
+Итак, никакие правила удалить не получилось, так что множество ФЗ остается неизменным.
+
+4.3r. Результаты третьего этапа
+
+StudentId -> StudentName
+StudentId -> GroupId
+GroupId -> GroupName
+CourseId -> CourseName
+LecturerId -> LecturerName
+CourseId, StudentId -> Mark
+CourseId, GroupId -> LecturerId

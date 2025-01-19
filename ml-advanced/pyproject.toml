@@ -1,0 +1,49 @@
+[tool.poetry]
+name = "ml-advanced"
+version = "0.1.0"
+description = ""
+authors = ["Igor Podtsepko <i.podtsepko2002@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "mytorch", from = "src" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+ipykernel = "^6.29.5"
+tqdm = "^4.66.5"
+matplotlib = "^3.9.2"
+scipy = "^1.14.1"
+scikit-learn = "^1.5.2"
+pandas = "^2.2.3"
+torch = "^2.5.1"
+datasets = "^3.1.0"
+transformers = "^4.46.3"
+torchtext = "^0.18.0"
+sacremoses = "^0.1.1"
+sentencepiece = "^0.2.0"
+nltk = "^3.9.1"
+numpy = "2.0.0"
+spacy = "^3.8.2"
+protobuf = "^5.28.3"
+evaluate = "^0.4.3"
+sacrebleu = "^2.4.3"
+accelerate = "^1.1.1"
+gymnasium = "^1.0.0"
+ale = "^0.8.4"
+shimmy = "^2.0.0"
+torchvision = "^0.20.1"
+opencv-python = "^4.10.0.84"
+torchsummary = "^1.5.1"
+optuna = "^4.1.0"
+plotly = "^5.24.1"
+diffusers = "^0.32.1"
+langchain-core = "^0.3.29"
+langchain-ollama = "^0.2.2"
+
+[tool.poetry.dev-dependencies]
+jupyter = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

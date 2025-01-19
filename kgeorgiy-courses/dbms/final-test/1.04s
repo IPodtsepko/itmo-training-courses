@@ -1,0 +1,11 @@
+select
+    RunId,
+    SessionId,
+    Letter,
+    SubmitTime
+from
+    Runs natural
+    join Sessions
+where
+    Accepted = 0
+    and ContestId = :ContestId;

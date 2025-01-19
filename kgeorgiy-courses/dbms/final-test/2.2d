@@ -1,0 +1,6 @@
+Q(TeamId) :-
+    Sessions(SessionId, TeamId, :ContestId, _),
+    Runs(_, SessionId, :Letter, _, 1).
+R(TeamName) :-
+    Teams(TeamId, TeamName),
+    not Q(TeamId).

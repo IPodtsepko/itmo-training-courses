@@ -1,0 +1,14 @@
+select StudentId from Marks
+except
+select StudentId
+from (
+    select
+        StudentId, Plan.CourseId
+    from
+        Marks,
+        Plan natural join Lecturers
+    where
+        LecturerName = :LecturerName
+    except
+    select StudentId, CourseId from Marks
+) S

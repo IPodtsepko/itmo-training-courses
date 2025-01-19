@@ -1,0 +1,61 @@
+def expression() -> ('Integer' result, 'Integer' external)
+    : term() 'result = term.result; external = term.result;'
+      terms(external) 'result = terms.result; external = result;'
+    ;
+
+def term() -> ('Integer' result, 'Integer' internal)
+    : multiplier() 'internal = multiplier.result;'
+      multipliers(internal) 'result = multipliers.result;'
+    ;
+
+def terms('Integer' external) -> ('Integer' result, 'Integer' internal)
+    : Plus term() 'internal = external + term.result;'
+           terms(internal) 'result = terms.result;'
+    | Minus term() 'internal = external - term.result;'
+            terms(internal) 'result = terms.result;'
+    | Epsilon 'result = external;'
+    ;
+
+def multiplier() -> ('Integer' result)
+    : argument() 'result = argument.result;' maybeFactorial(result) 'result = maybeFactorial.result'
+    ;
+
+def argument() -> ('Integer' result)
+    : OpeningParenthesis expression() 'result = expression.result;' ClosingParenthesis
+    | Natural 'result = Integer.parseInt(Natural.text);'
+    ;
+
+def maybeFactorial('Integer' value) -> ('Integer' result)
+    : SubFactorial '
+                result = 1;
+                while (value > 1) {
+                    result *= value;
+                    value -= 2;
+                }'
+    | Factorial '
+                result = 1;
+                while (value > 1) {
+                    result *= value;
+                    value -= 1;
+                }'
+    | Epsilon 'result = value;'
+    ;
+
+def multipliers('Integer' external) -> ('Integer' result, 'Integer' internal)
+    : Multiplication multiplier() 'internal = external * multiplier.result;'
+                     multipliers(internal) 'result = multipliers.result;'
+    | Division multiplier() 'internal = external / multiplier.result;'
+               multipliers(internal) 'result = multipliers.result;'
+    | Epsilon 'result = external;'
+    ;
+
+val SubFactorial: '!!';
+val Factorial: '!';
+val ClosingParenthesis: '\\)';
+val Division: '/';
+val Minus: '-';
+val Multiplication: '\\*';
+val Natural: '[0-9]+';
+val OpeningParenthesis: '\\(';
+val Plus: '\\+';
+val Skip: ' \t\n\r';

@@ -1,0 +1,11 @@
+select
+    StudentName, CourseName
+from
+    (
+        select distinct
+            StudentId, StudentName, CourseId, CourseName
+        from
+            Students
+            natural join Plan
+            natural join Courses
+    ) Selected

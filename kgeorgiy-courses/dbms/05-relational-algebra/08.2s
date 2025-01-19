@@ -1,0 +1,8 @@
+select
+    StudentName,
+    sum(Mark) as SumMark
+from
+    Students
+    left join Marks on Students.StudentId = Marks.StudentId
+group by
+    Students.StudentId, StudentName

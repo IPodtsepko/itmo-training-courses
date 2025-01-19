@@ -1,0 +1,24 @@
+select
+    StudentName,
+    CourseName
+from
+    Students S,
+    Courses C
+where
+    exists (
+        select
+            *
+        from
+            Plan P
+        where
+            P.GroupId = S.GroupId
+            and P.CourseId = C.CourseId
+        union
+        select
+            *
+        from
+            Marks M
+        where
+            M.StudentId = S.StudentId
+            and M.CourseId = C.CourseId
+    )

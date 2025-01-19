@@ -1,0 +1,33 @@
+def functionHeader() -> ()
+    : type() identifier() OpeningParenthesis arguments() ClosingParenthesis
+    ;
+
+def type() -> ()
+    : identifier() pointers()
+    ;
+
+def pointers() -> ()
+    : Asterisk pointers()
+    | Epsilon
+    ;
+
+def identifier() -> ()
+    : Identifier
+    ;
+
+def arguments() -> ()
+    : type() identifier() tail()
+    | Epsilon
+    ;
+
+def tail() -> ()
+    : Comma type() identifier() tail()
+    | Epsilon
+    ;
+
+val Identifier: '[a-zA-Z_:][0-9a-zA-Z_:]*';
+val Asterisk: '\\*';
+val OpeningParenthesis: '\\(';
+val ClosingParenthesis: '\\)';
+val Skip: ' \t\n\r';
+val Comma: ',';

@@ -1,0 +1,14 @@
+update
+    Runs
+set
+    Accepted = 0
+where
+    SubmitTime = (
+        select
+            min(cast(SubmitTime as int))
+        from
+            Runs R
+        where
+            R.SessionId = Runs.SessionId
+            and R.Letter = Runs.Letter
+    );

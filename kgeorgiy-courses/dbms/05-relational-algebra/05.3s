@@ -1,0 +1,14 @@
+select
+    StudentName, CourseName
+from
+    (
+        select distinct
+            Students.StudentId, StudentName, Courses.CourseId, CourseName
+        from
+            Students
+            natural join Plan
+            natural join Courses
+            left join Marks on Students.StudentId = Marks.StudentId and Courses.CourseId = Marks.CourseId
+        where
+            Mark is null or Mark <> 4 and Mark <> 5
+    ) Selected

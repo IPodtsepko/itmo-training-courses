@@ -1,0 +1,4 @@
+select
+    ProblemName
+from
+    Problems P;
